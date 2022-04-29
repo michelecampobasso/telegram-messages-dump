@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=missing-docstring
 
+from telethon.tl.types import MessageMediaPhoto
+
 # pylint: disable=too-few-public-methods
 class common(object):
     """ json exporter plugin.
@@ -14,7 +16,7 @@ class common(object):
         pass
 
     @staticmethod
-    def extract_message_data(msg):
+    def extract_message_data(msg, tg_client):
         """ Extracts user name from 'sender', message caption and message content from msg.
             :param msg: Raw message object.
 
@@ -53,12 +55,20 @@ class common(object):
 
         is_contains_media = False
         media_content = None
+        media = getattr(msg, 'media', None)
         # Format the message content
-        if getattr(msg, 'media', None):
+        if media:
+            if isinstance(msg.media, MessageMediaPhoto):
+                filename = tg_client.settings.downdir + "/" + tg_client.channel_name + "/" + str(msg.id) + '-' + str(msg.date) + '-' + name + '.jpg'
+                tg_client.download_media(msg, filename)
             # The media may or may not have a caption
             is_contains_media = True
             caption = getattr(msg.media, 'caption', '')
-            media_content = '<{}> {}'.format(
-                type(msg.media).__name__, caption)
+            if isinstance(msg.media, MessageMediaPhoto):
+                media_content = '<{}> {} {}'.format(
+                    type(msg.media).__name__, filename, caption)
+            else:
+                media_content = '<{}> {}'.format(
+                    type(msg.media).__name__, caption)
 
         return name, caption, content, re_id_str, is_sent_by_bot, is_contains_media, media_content

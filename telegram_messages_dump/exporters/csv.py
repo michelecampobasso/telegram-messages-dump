@@ -26,7 +26,7 @@ class csv(object):
         for i in range(0x20):
             self.ESCAPE_DICT.setdefault(chr(i), '\\u{0:04x}'.format(i))
 
-    def format(self, msg, exporter_context):
+    def format(self, msg, tg_client):
         """ Formatter method. Takes raw msg and converts it to a *one-line* string.
             :param msg: Raw message object :class:`telethon.tl.types.Message` and derivatives.
                         https://core.telegram.org/type/Message
@@ -34,7 +34,7 @@ class csv(object):
             :returns: *one-line* string containing one message data.
         """
         # pylint: disable=unused-argument
-        name, _, content, re_id, _, _, _ = common.extract_message_data(msg)
+        name, _, content, re_id, _, _, _ = common.extract_message_data(msg, tg_client)
         # Format a message log record
         # msg_dump_str = '[{}-{:02d}-{:02d} {:02d}:{:02d}] ID={} {}{}: {}'.format(
         #     msg.date.year, msg.date.month, msg.date.day,

@@ -5,6 +5,8 @@
 import json
 from datetime import date, datetime
 from .common import common
+from telethon.tl.types import PeerUser, User
+
 
 class jsonl(object):
     """ jsonl exporter plugin.
@@ -21,7 +23,7 @@ class jsonl(object):
         pass
 
     # pylint: disable=unused-argument
-    def format(self, msg, exporter_context):
+    def format(self, msg, tg_client):
         """ Formatter method. Takes raw msg and converts it to a *one-line* string.
             :param msg: Raw message object :class:`telethon.tl.types.Message` and derivatives.
                         https://core.telegram.org/type/Message
@@ -29,11 +31,10 @@ class jsonl(object):
             :returns: *one-line* string containing one message data.
         """
         # pylint: disable=line-too-long
-        name, _, content, re_id, is_sent_by_bot, is_contains_media, media_content = common.extract_message_data(msg)
-
+        name, _, content, re_id, is_sent_by_bot, is_contains_media, media_content = common.extract_message_data(msg, tg_client)
         msgDictionary = {
             'message_id': msg.id,
-            'from_id': msg.from_id,
+            'from_id': msg.from_id.user_id,
             'reply_id': re_id,
             'author': name,
             'sent_by_bot': is_sent_by_bot,

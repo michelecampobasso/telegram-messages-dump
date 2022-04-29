@@ -32,6 +32,7 @@ class ChatDumpSettings:
         parser.add_argument('-v', '--verbose', action='store_true')
         parser.add_argument('--addbom', action='store_true')
         parser.add_argument('-q', '--quiet', action='store_true')
+        parser.add_argument('-d', '--downdir', default='./downloads')
 
         args = parser.parse_args()
 
@@ -44,6 +45,8 @@ class ChatDumpSettings:
             args.out = args.out.strip()
         if args.phone:
             args.phone = args.phone.strip()
+        if args.downdir:
+            args.downdir = args.downdir.strip()
 
         # Detect Normal/Incremental mode
         self._process_incremental_mode_option(args, parser)
@@ -89,6 +92,7 @@ class ChatDumpSettings:
         self.is_verbose = args.verbose
         self.is_addbom = args.addbom
         self.is_quiet_mode = args.quiet
+        self.downdir = args.downdir
 
     def _process_incremental_mode_option(self, args, parser):
         """ Arguments parsing related to --continue setting """

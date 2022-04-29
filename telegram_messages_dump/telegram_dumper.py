@@ -19,6 +19,7 @@ from telethon.errors import (FloodWaitError,
                              UsernameNotOccupiedError,
                              UsernameInvalidError)
 from telethon.tl.functions.contacts import ResolveUsernameRequest
+from telethon.tl.types import PeerUser, User
 from telegram_messages_dump.utils import sprint
 from telegram_messages_dump.utils import JOIN_CHAT_PREFIX_URL
 from telegram_messages_dump.exceptions import DumpingError
@@ -68,6 +69,9 @@ class TelegramDumper(TelegramClient):
         # The number of messages written into a resulting file de-facto
         self.output_total_count = 0
 
+        # The channel name for media saving readibility purposes
+        self.channel_name = ""
+        
     def run(self):
         """ Dumps all desired chat messages into a file """
 
@@ -76,6 +80,7 @@ class TelegramDumper(TelegramClient):
             self._init_connect()
             try:
                 chatObj = self._getChannel()
+                self.channel_name = chatObj.title
             except ValueError as ex:
                 ret_code = 1
                 self.logger.error('%s', ex,
@@ -245,8 +250,7 @@ class TelegramDumper(TelegramClient):
                 self.msg_count_to_process = 0
                 break
 
-            msg_dump_str = self.exporter.format(msg, self.exporter_context)
-
+            msg_dump_str = self.exporter.format(msg, self)
             buffer.append(msg_dump_str)
 
             self.msg_count_to_process -= 1

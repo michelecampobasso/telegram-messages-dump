@@ -23,6 +23,7 @@ Where:
     -v,  --verbose   Verbose mode. (Default: False)
       ,  --addbom    Add BOM to the beginning of the output file. (Default: False)
     -h,  --help      Show this help message and exit.
+    -d,  --downdir   Download directory (Default: ./download)
 """
 
 import os
