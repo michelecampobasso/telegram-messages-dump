@@ -23,9 +23,6 @@ Or run after installing locally
 python setup.py install
 telegram-messages-dump
 ```
-**Binaries:**
-
-Binaries for Linux, Windows ~~and MacOS~~ are available in [Releases](https://github.com/Kosat/telegram-messages-dump/releases) section.
 
 ## Usage
 
