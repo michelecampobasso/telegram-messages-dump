@@ -11,7 +11,7 @@ pip install telegram-messages-dump
 **From sources:**
 Fetch the latest sources with git:
 ```
-git clone https://github.com/Kosat/telegram-messages-dump.git
+git clone https://github.com/michelecampobasso/telegram-messages-dump.git
 ```
 Then run directly from sources
 ```
