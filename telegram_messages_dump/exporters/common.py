@@ -70,5 +70,12 @@ class common(object):
             else:
                 media_content = '<{}> {}'.format(
                     type(msg.media).__name__, caption)
+            
+            if isinstance(msg.media, MessageMediaDocument):
+                extension = get_extension(msg.media)
+                if extension == ".pdf" or extension == ".docx" or extension == ".zip" or extension == ".rar":
+                    filename = tg_client.settings.downdir + "/" + tg_client.channel_name + "/Documents/" + str(msg.id) + '-' + str(msg.date) + '-' + name + extension
+                    tg_client.download_media(msg, filename)
+
 
         return name, caption, content, re_id_str, is_sent_by_bot, is_contains_media, media_content
